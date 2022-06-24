@@ -6,5 +6,6 @@ const router = express.Router();
 router.get("/veiculos", VeiculoController.listVeiculos);
 router.post("/veiculos", VeiculoController.addVeiculo);
 router.put("/veiculos/:id", VeiculoController.updateVeiculo);
+router.delete("/veiculos/:id", VeiculoController.deleteVeiculo);
 
 export default router;

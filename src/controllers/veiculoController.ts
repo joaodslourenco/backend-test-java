@@ -37,6 +37,18 @@ class VeiculoController {
         .send({ message: `${err} - falha ao atualizar veículo.` });
     }
   };
+
+  static deleteVeiculo = async (req: Request, res: Response) => {
+    try {
+      const id = req.params.id;
+      await veiculos.findByIdAndDelete(id);
+      return res.status(200).send({ message: "Veículo deletado com sucesso." });
+    } catch (err) {
+      return res
+        .status(500)
+        .send({ message: `${err} - falha ao deletar veículo.` });
+    }
+  };
 }
 
 export default VeiculoController;
