@@ -25,6 +25,18 @@ class VeiculoController {
         .send({ message: `${err} - falha ao registrar veículo.` });
     }
   };
+
+  static updateVeiculo = async (req: Request, res: Response) => {
+    try {
+      const id = req.params.id;
+      await veiculos.findByIdAndUpdate(id, { $set: req.body });
+      return res.status(200).send("Veículo atualizado com sucesso.");
+    } catch (err) {
+      return res
+        .status(401)
+        .send({ message: `${err} - falha ao atualizar veículo.` });
+    }
+  };
 }
 
 export default VeiculoController;
