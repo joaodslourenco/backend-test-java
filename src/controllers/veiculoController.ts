@@ -14,6 +14,19 @@ class VeiculoController {
     }
   };
 
+  static listVeiculoById = async (req: Request, res: Response) => {
+    try {
+      const id = req.params.id;
+      const vehicle = await veiculos.findById(id);
+
+      return res.status(200).send(vehicle);
+    } catch (err) {
+      return res
+        .status(400)
+        .send({ message: `${err} - erro ao pesquisar veículo.` });
+    }
+  };
+
   static addVeiculo = async (req: Request, res: Response) => {
     try {
       const newVehicle: HydratedDocument<IVeiculo> = new veiculos(req.body);
