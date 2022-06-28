@@ -4,9 +4,9 @@ import { IVeiculo } from "./Veiculo";
 export interface IEstabelecimento {
   id: string;
   nome: string;
-  cnpj: number;
+  cnpj: string;
   endereco: string;
-  telefone: number;
+  telefone: string;
   qtdVagasMotos: number;
   qtdVagasCarros: number;
   vagasOcupadasMotos: number;
@@ -17,18 +17,18 @@ export interface IEstabelecimento {
 const estabelecimentoSchema = new mongoose.Schema<IEstabelecimento>({
   id: { type: String },
   nome: { type: String, required: true },
-  cnpj: { type: Number, required: true },
+  cnpj: { type: String, required: true },
   endereco: { type: String, required: true },
-  telefone: { type: Number, required: true },
+  telefone: { type: String, required: true },
   qtdVagasMotos: { type: Number, required: true },
   qtdVagasCarros: { type: Number, required: true },
   vagasOcupadasMotos: { type: Number, required: true },
   vagasOcupadasCarros: { type: Number, required: true },
-  veiculos: [{ type: Types.ObjectId, ref: "Veiculos" }],
+  veiculos: [{ type: Schema.Types.ObjectId, ref: "Veiculos" }],
 });
 
 const estabelecimentos = mongoose.model(
-  "Estabelecimentos",
+  "estabelecimentos",
   estabelecimentoSchema,
 );
 
