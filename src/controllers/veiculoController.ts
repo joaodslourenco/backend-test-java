@@ -46,6 +46,31 @@ class VeiculoController {
           console.log(err);
         },
       );
+
+      if (newVehicle.tipo === "carro") {
+        estabelecimentos.findByIdAndUpdate(
+          establishmentId,
+          {
+            $inc: { vagasOcupadasCarros: +1 },
+          },
+          {},
+          (err) => {
+            console.log(err);
+          },
+        );
+      } else {
+        estabelecimentos.findByIdAndUpdate(
+          establishmentId,
+          {
+            $inc: { vagasOcupadasMotos: +1 },
+          },
+          {},
+          (err) => {
+            console.log(err);
+          },
+        );
+      }
+
       return res.status(201).send({ vehicle: newVehicle });
     } catch (err) {
       return res
