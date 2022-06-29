@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { HydratedDocument } from "mongoose";
 import veiculos, { IVeiculo } from "../models/Veiculo";
 import {
-  addToVeiculosArrayOnEstablisment,
+  addToVeiculosArrayOnEstablishment,
   decreaseVagasDisponiveis,
   deleteFromVeiculosArrayOnEstablishment,
   increaseVagasDisponiveis,
@@ -27,7 +27,9 @@ class VeiculoController {
   static listVeiculoById = async (req: Request, res: Response) => {
     try {
       const id = req.params.id;
-      const vehicle = await veiculos.findById(id);
+      const vehicle = await veiculos
+        .findById(id)
+        .populate("estabelecimento", ["nome", "endereco"]);
 
       return res.status(200).send(vehicle);
     } catch (err) {
@@ -44,7 +46,7 @@ class VeiculoController {
       await verifyIfVehicleAlreadyExists(newVehicle);
       await verifyParkingSpaces(newVehicle);
       await newVehicle.save();
-      await addToVeiculosArrayOnEstablisment(newVehicle);
+      await addToVeiculosArrayOnEstablishment(newVehicle);
       decreaseVagasDisponiveis(newVehicle);
 
       return res.status(201).send({ vehicle: newVehicle });

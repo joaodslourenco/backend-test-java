@@ -2,7 +2,7 @@ import { Document } from "mongoose";
 import estabelecimentos from "../models/Estabelecimento";
 import { IVeiculo } from "../models/Veiculo";
 
-export const addToVeiculosArrayOnEstablisment = async (
+export const addToVeiculosArrayOnEstablishment = async (
   newVehicle: IVeiculo & Document,
 ) => {
   const establishmentId = newVehicle.estabelecimento;
