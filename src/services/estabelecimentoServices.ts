@@ -1,8 +1,9 @@
+import { Document } from "mongoose";
 import estabelecimentos from "../models/Estabelecimento";
 import { IVeiculo } from "../models/Veiculo";
 
 export const addToVeiculosArrayOnEstablisment = async (
-  newVehicle: IVeiculo,
+  newVehicle: IVeiculo & Document,
 ) => {
   const establishmentId = newVehicle.estabelecimento;
   const vehicleId = newVehicle._id;
@@ -10,6 +11,23 @@ export const addToVeiculosArrayOnEstablisment = async (
     establishmentId,
     {
       $push: { veiculos: [...[vehicleId]] },
+    },
+    {},
+    (err) => {
+      console.log(err);
+    },
+  );
+};
+
+export const deleteFromVeiculosArrayOnEstablishment = async (
+  vehicle: IVeiculo & Document,
+) => {
+  const establishmentId = vehicle.estabelecimento;
+  const vehicleId = vehicle._id;
+  estabelecimentos.findByIdAndUpdate(
+    establishmentId,
+    {
+      $pull: { veiculos: [{ vehicleId }] },
     },
     {},
     (err) => {
@@ -33,9 +51,9 @@ export const verifyParkingSpaces = async (newVehicle: IVeiculo) => {
   return;
 };
 
-export const updateVagasDisponiveis = (newVehicle: IVeiculo) => {
-  const establishmentId = newVehicle.estabelecimento;
-  if (newVehicle.tipo === "carro") {
+export const decreaseVagasDisponiveis = async (vehicle: IVeiculo) => {
+  const establishmentId = vehicle.estabelecimento;
+  if (vehicle.tipo === "carro") {
     estabelecimentos.findByIdAndUpdate(
       establishmentId,
       {
@@ -51,6 +69,33 @@ export const updateVagasDisponiveis = (newVehicle: IVeiculo) => {
       establishmentId,
       {
         $inc: { vagasDisponiveisMotos: -1 },
+      },
+      {},
+      (err) => {
+        console.log(err);
+      },
+    );
+  }
+};
+
+export const increaseVagasDisponiveis = async (vehicle: IVeiculo) => {
+  const establishmentId = vehicle.estabelecimento;
+  if (vehicle.tipo === "carro") {
+    estabelecimentos.findByIdAndUpdate(
+      establishmentId,
+      {
+        $inc: { vagasDisponiveisCarros: +1 },
+      },
+      {},
+      (err) => {
+        console.log(err);
+      },
+    );
+  } else {
+    estabelecimentos.findByIdAndUpdate(
+      establishmentId,
+      {
+        $inc: { vagasDisponiveisMotos: +1 },
       },
       {},
       (err) => {
