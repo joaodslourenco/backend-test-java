@@ -2,6 +2,11 @@ import { Request, Response } from "express";
 import { HydratedDocument } from "mongoose";
 import estabelecimentos from "../models/Estabelecimento";
 import veiculos, { IVeiculo } from "../models/Veiculo";
+import {
+  addToVeiculosArrayOnEstablisment,
+  updateVagasOcupadas,
+} from "../services/estabelecimentoServices";
+import { verifyIfVehicleAlreadyExists } from "../services/veiculoServices";
 
 class VeiculoController {
   static listVeiculos = async (req: Request, res: Response) => {
@@ -33,43 +38,11 @@ class VeiculoController {
   static addVeiculo = async (req: Request, res: Response) => {
     try {
       const newVehicle: HydratedDocument<IVeiculo> = new veiculos(req.body);
+
+      await verifyIfVehicleAlreadyExists(newVehicle);
       await newVehicle.save();
-      const establishmentId = newVehicle.estabelecimento;
-
-      estabelecimentos.findByIdAndUpdate(
-        establishmentId,
-        {
-          $push: { veiculos: [...[newVehicle._id]] },
-        },
-        {},
-        (err) => {
-          console.log(err);
-        },
-      );
-
-      if (newVehicle.tipo === "carro") {
-        estabelecimentos.findByIdAndUpdate(
-          establishmentId,
-          {
-            $inc: { vagasOcupadasCarros: +1 },
-          },
-          {},
-          (err) => {
-            console.log(err);
-          },
-        );
-      } else {
-        estabelecimentos.findByIdAndUpdate(
-          establishmentId,
-          {
-            $inc: { vagasOcupadasMotos: +1 },
-          },
-          {},
-          (err) => {
-            console.log(err);
-          },
-        );
-      }
+      await addToVeiculosArrayOnEstablisment(newVehicle);
+      updateVagasOcupadas(newVehicle);
 
       return res.status(201).send({ vehicle: newVehicle });
     } catch (err) {
