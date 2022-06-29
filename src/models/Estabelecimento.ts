@@ -11,7 +11,7 @@ export interface IEstabelecimento {
   qtdVagasCarros: number;
   vagasOcupadasMotos: number;
   vagasOcupadasCarros: number;
-  veiculos: Types.DocumentArray<IVeiculo>;
+  veiculos: IVeiculo[];
 }
 
 const estabelecimentoSchema = new mongoose.Schema<IEstabelecimento>({
@@ -24,7 +24,7 @@ const estabelecimentoSchema = new mongoose.Schema<IEstabelecimento>({
   qtdVagasCarros: { type: Number, required: true },
   vagasOcupadasMotos: { type: Number, required: true },
   vagasOcupadasCarros: { type: Number, required: true },
-  veiculos: [{ type: Schema.Types.ObjectId, ref: "Veiculos" }],
+  veiculos: [{ type: mongoose.Schema.Types.ObjectId, ref: "Veiculos" }],
 });
 
 const estabelecimentos = mongoose.model(

@@ -1,11 +1,14 @@
 import { Request, Response } from "express";
 import { HydratedDocument } from "mongoose";
+import estabelecimentos from "../models/Estabelecimento";
 import veiculos, { IVeiculo } from "../models/Veiculo";
 
 class VeiculoController {
   static listVeiculos = async (req: Request, res: Response) => {
     try {
-      const vehicles = await veiculos.find();
+      const vehicles = await veiculos
+        .find()
+        .populate("estabelecimento", ["nome", "endereco"]);
       return res.status(200).json(vehicles);
     } catch (err) {
       return res
@@ -31,6 +34,18 @@ class VeiculoController {
     try {
       const newVehicle: HydratedDocument<IVeiculo> = new veiculos(req.body);
       await newVehicle.save();
+      const establishmentId = newVehicle.estabelecimento;
+
+      estabelecimentos.findByIdAndUpdate(
+        establishmentId,
+        {
+          $push: { veiculos: [...[newVehicle._id]] },
+        },
+        {},
+        (err) => {
+          console.log(err);
+        },
+      );
       return res.status(201).send({ vehicle: newVehicle });
     } catch (err) {
       return res

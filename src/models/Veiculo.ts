@@ -19,9 +19,9 @@ const veiculoSchema = new mongoose.Schema<IVeiculo>({
   placa: { type: String, required: true },
   tipo: { type: String, enum: ["carro", "moto"], required: true },
   estabelecimento: {
-    type: mongoose.Types.ObjectId,
-    ref: "Estabelecimentos",
-    // required: true,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "estabelecimentos",
+    required: true,
   },
 });
 
