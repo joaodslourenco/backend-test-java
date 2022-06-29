@@ -4,7 +4,8 @@ import estabelecimentos from "../models/Estabelecimento";
 import veiculos, { IVeiculo } from "../models/Veiculo";
 import {
   addToVeiculosArrayOnEstablisment,
-  updateVagasOcupadas,
+  updateVagasDisponiveis,
+  verifyParkingSpaces,
 } from "../services/estabelecimentoServices";
 import { verifyIfVehicleAlreadyExists } from "../services/veiculoServices";
 
@@ -40,9 +41,10 @@ class VeiculoController {
       const newVehicle: HydratedDocument<IVeiculo> = new veiculos(req.body);
 
       await verifyIfVehicleAlreadyExists(newVehicle);
+      await verifyParkingSpaces(newVehicle);
       await newVehicle.save();
       await addToVeiculosArrayOnEstablisment(newVehicle);
-      updateVagasOcupadas(newVehicle);
+      updateVagasDisponiveis(newVehicle);
 
       return res.status(201).send({ vehicle: newVehicle });
     } catch (err) {

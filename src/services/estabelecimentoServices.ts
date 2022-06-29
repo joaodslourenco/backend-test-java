@@ -18,13 +18,28 @@ export const addToVeiculosArrayOnEstablisment = async (
   );
 };
 
-export const updateVagasOcupadas = (newVehicle: IVeiculo) => {
+export const verifyParkingSpaces = async (newVehicle: IVeiculo) => {
+  const establishmentId = newVehicle.estabelecimento;
+  const establishment = await estabelecimentos.findById(establishmentId);
+  const vehicleType = newVehicle.tipo;
+
+  if (
+    (vehicleType === "carro" && establishment?.vagasDisponiveisCarros === 0) ||
+    (vehicleType === "moto" && establishment?.vagasDisponiveisMotos === 0)
+  ) {
+    throw Error("Não existem vagas disponíveis!");
+  }
+
+  return;
+};
+
+export const updateVagasDisponiveis = (newVehicle: IVeiculo) => {
   const establishmentId = newVehicle.estabelecimento;
   if (newVehicle.tipo === "carro") {
     estabelecimentos.findByIdAndUpdate(
       establishmentId,
       {
-        $inc: { vagasOcupadasCarros: +1 },
+        $inc: { vagasDisponiveisCarros: -1 },
       },
       {},
       (err) => {
@@ -35,7 +50,7 @@ export const updateVagasOcupadas = (newVehicle: IVeiculo) => {
     estabelecimentos.findByIdAndUpdate(
       establishmentId,
       {
-        $inc: { vagasOcupadasMotos: +1 },
+        $inc: { vagasDisponiveisMotos: -1 },
       },
       {},
       (err) => {

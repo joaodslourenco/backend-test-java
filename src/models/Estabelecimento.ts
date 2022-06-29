@@ -9,8 +9,8 @@ export interface IEstabelecimento {
   telefone: string;
   qtdVagasMotos: number;
   qtdVagasCarros: number;
-  vagasOcupadasMotos: number;
-  vagasOcupadasCarros: number;
+  vagasDisponiveisMotos: number;
+  vagasDisponiveisCarros: number;
   veiculos: IVeiculo[];
 }
 
@@ -22,8 +22,8 @@ const estabelecimentoSchema = new mongoose.Schema<IEstabelecimento>({
   telefone: { type: String, required: true },
   qtdVagasMotos: { type: Number, required: true },
   qtdVagasCarros: { type: Number, required: true },
-  vagasOcupadasMotos: { type: Number, required: true },
-  vagasOcupadasCarros: { type: Number, required: true },
+  vagasDisponiveisMotos: { type: Number, required: true },
+  vagasDisponiveisCarros: { type: Number, required: true },
   veiculos: [{ type: mongoose.Schema.Types.ObjectId, ref: "Veiculos" }],
 });
 
