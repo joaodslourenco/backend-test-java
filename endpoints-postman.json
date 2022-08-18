@@ -1,0 +1,252 @@
+{
+	"info": {
+		"_postman_id": "31036fe8-2057-47f7-91db-c6492a2e9930",
+		"name": "teste-backend-fcamara",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18790890"
+	},
+	"item": [
+		{
+			"name": "Veiculo",
+			"item": [
+				{
+					"name": "Get Veiculos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3333/veiculos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3333",
+							"path": [
+								"veiculos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Veiculo",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"marca\": \"Honda\",\r\n    \"modelo\": \"Motoca\",\r\n    \"cor\": \"Branco\",\r\n    \"placa\": \"RA54321\",\r\n    \"tipo\": \"moto\",\r\n    \"estabelecimento\": \"62bb10123468d18c3cbfd47d\"\r\n   \r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3333/veiculos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3333",
+							"path": [
+								"veiculos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit veiculo",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"modelo\": \"CG150\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3333/veiculos/62b5c685fa93d72ff939a9f8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3333",
+							"path": [
+								"veiculos",
+								"62b5c685fa93d72ff939a9f8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get veículo by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3333/veiculos/62b5bd943b73298b1e30be1a",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3333",
+							"path": [
+								"veiculos",
+								"62b5bd943b73298b1e30be1a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Veiculo",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3333/veiculos/62b5c685fa93d72ff939a9f8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3333",
+							"path": [
+								"veiculos",
+								"62b5c685fa93d72ff939a9f8"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Estabelecimento",
+			"item": [
+				{
+					"name": "Get Estabelecimentos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3333/estabelecimentos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3333",
+							"path": [
+								"estabelecimentos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Estabelecimento",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"nome\": \"Shopping Rio Tapajós\",\r\n   \"cnpj\": \"123456.1232/90\",\r\n   \"endereco\": \"Av. Fernando Guilhon\",\r\n   \"telefone\": \"3522-1234\",\r\n   \"qtdVagasMotos\": 150,\r\n   \"qtdVagasCarros\": 300,\r\n   \"vagasDisponiveisMotos\": 150,\r\n   \"vagasDisponiveisCarros\": 300\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3333/estabelecimentos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3333",
+							"path": [
+								"estabelecimentos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Estabelecimento",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"modelo\": \"CG150\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3333/veiculos/62b5c685fa93d72ff939a9f8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3333",
+							"path": [
+								"veiculos",
+								"62b5c685fa93d72ff939a9f8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get estabelecimento by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3333/veiculos/62b5bd943b73298b1e30be1a",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3333",
+							"path": [
+								"veiculos",
+								"62b5bd943b73298b1e30be1a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete estabelecimento",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3333/veiculos/62b5c685fa93d72ff939a9f8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3333",
+							"path": [
+								"veiculos",
+								"62b5c685fa93d72ff939a9f8"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
