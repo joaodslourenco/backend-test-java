@@ -73,10 +73,12 @@ class VeiculoController {
     try {
       const id = req.params.id;
       const vehicle = await veiculos.findById(id);
-      console.log(vehicle);
-      await increaseVagasDisponiveis(vehicle);
-      await deleteFromVeiculosArrayOnEstablishment(vehicle);
-      vehicle?.delete();
+      if (vehicle) {
+        await increaseVagasDisponiveis(vehicle);
+        await deleteFromVeiculosArrayOnEstablishment(vehicle);
+        vehicle.delete();
+      }
+
       return res.status(200).send({ message: "Veículo deletado com sucesso." });
     } catch (err) {
       return res
