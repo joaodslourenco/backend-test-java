@@ -26,11 +26,8 @@ class VeiculoController {
   static listVeiculoById = async (req: Request, res: Response) => {
     try {
       const id = req.params.id;
-      const vehicle = await veiculos
-        .findById(id)
-        .populate("estabelecimento", ["nome", "endereco"]);
-
-      return res.status(200).send(vehicle);
+      const vehicle = await VeiculoRepository.getVehicleById(id);
+      return res.status(200).json(vehicle);
     } catch (err) {
       return res
         .status(400)
