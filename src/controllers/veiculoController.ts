@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { HydratedDocument } from "mongoose";
 import veiculos, { IVeiculo } from "../models/Veiculo";
+import { VeiculoRepository } from "../repositories/veiculoRepository";
 import {
   addToVeiculosArrayOnEstablishment,
   decreaseVagasDisponiveis,
@@ -13,9 +14,7 @@ import { verifyIfVehicleAlreadyExists } from "../services/veiculoServices";
 class VeiculoController {
   static listVeiculos = async (req: Request, res: Response) => {
     try {
-      const vehicles = await veiculos
-        .find()
-        .populate("estabelecimento", ["nome", "endereco"]);
+      const vehicles = await VeiculoRepository.getAllVehicles();
       return res.status(200).json(vehicles);
     } catch (err) {
       return res
