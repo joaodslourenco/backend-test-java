@@ -1,12 +1,14 @@
 import { Request, Response } from "express";
 import { HydratedDocument } from "mongoose";
 import estabelecimentos, { IEstabelecimento } from "../models/Estabelecimento";
+import { EstabelecimentoRepository } from "../repositories/estabelecimentoRepository";
 
 class EstabelecimentoController {
   static listEstabelecimentos = async (req: Request, res: Response) => {
     try {
-      const establishment = await estabelecimentos.find().populate("veiculos");
-      return res.status(200).json(establishment);
+      const establishmentList =
+        await EstabelecimentoRepository.getEstabelecimentosList();
+      return res.status(200).json(establishmentList);
     } catch (err) {
       return res
         .status(400)
