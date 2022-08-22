@@ -1,4 +1,4 @@
-import { Document } from "mongoose";
+import { Document, HydratedDocument } from "mongoose";
 import veiculos, { IVeiculo } from "../models/Veiculo";
 
 export class VeiculoRepository {
@@ -21,5 +21,9 @@ export class VeiculoRepository {
 
   static async getVehicleByIdAndUpdate(id: string, data: any) {
     return veiculos.findByIdAndUpdate(id, data);
+  }
+
+  static async deleteVehicle(vehicle: HydratedDocument<IVeiculo>) {
+    vehicle.delete();
   }
 }

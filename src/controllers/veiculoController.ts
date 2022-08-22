@@ -1,14 +1,5 @@
 import { Request, Response } from "express";
-import { HydratedDocument } from "mongoose";
-import veiculos, { IVeiculo } from "../models/Veiculo";
 import { VeiculoRepository } from "../repositories/veiculoRepository";
-import {
-  addToVeiculosArrayOnEstablishment,
-  decreaseVagasDisponiveis,
-  deleteFromVeiculosArrayOnEstablishment,
-  increaseVagasDisponiveis,
-  verifyParkingSpaces,
-} from "../services/estabelecimentoServices";
 import { VeiculoServices } from "../services/veiculoServices";
 
 class VeiculoController {
@@ -66,13 +57,12 @@ class VeiculoController {
   static deleteVeiculo = async (req: Request, res: Response) => {
     try {
       const id = req.params.id;
-      const vehicle = await veiculos.findById(id);
+      const vehicle = await VeiculoRepository.getVehicleById(id);
       if (vehicle) {
         await increaseVagasDisponiveis(vehicle);
         await deleteFromVeiculosArrayOnEstablishment(vehicle);
-        vehicle.delete();
+        await VeiculoRepository.deleteVehicle(vehicle);
       }
-
       return res.status(200).send({ message: "Veículo deletado com sucesso." });
     } catch (err) {
       return res
