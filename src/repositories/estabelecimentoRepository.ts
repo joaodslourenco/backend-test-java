@@ -15,4 +15,8 @@ export class EstabelecimentoRepository {
   ) {
     await estabelecimento.save();
   }
+
+  static async getEstabelecimentoByIdAndUpdate(id: string, data: any) {
+    return estabelecimentos.findByIdAndUpdate(id, data);
+  }
 }

@@ -44,7 +44,9 @@ class EstabelecimentoController {
   static updateEstabelecimento = async (req: Request, res: Response) => {
     try {
       const id = req.params.id;
-      await estabelecimentos.findByIdAndUpdate(id, { $set: req.body });
+      await EstabelecimentoRepository.getEstabelecimentoByIdAndUpdate(id, {
+        $set: req.body,
+      });
       return res.status(200).send("Estabelecimento atualizado com sucesso.");
     } catch (err) {
       return res
