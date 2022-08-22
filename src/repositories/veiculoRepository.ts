@@ -1,3 +1,4 @@
+import { Document } from "mongoose";
 import veiculos, { IVeiculo } from "../models/Veiculo";
 
 export class VeiculoRepository {
@@ -9,5 +10,12 @@ export class VeiculoRepository {
     return veiculos
       .findById(id)
       .populate("estabelecimento", ["nome", "endereco"]);
+  }
+
+  static async getOneVehicle(vehicle: IVeiculo): Promise<IVeiculo | null> {
+    return veiculos.findOne({
+      estabelecimento: vehicle.estabelecimento,
+      placa: vehicle.placa,
+    });
   }
 }

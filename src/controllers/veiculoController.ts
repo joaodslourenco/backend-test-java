@@ -9,7 +9,7 @@ import {
   increaseVagasDisponiveis,
   verifyParkingSpaces,
 } from "../services/estabelecimentoServices";
-import { verifyIfVehicleAlreadyExists } from "../services/veiculoServices";
+import { VeiculoServices } from "../services/veiculoServices";
 
 class VeiculoController {
   static listVeiculos = async (req: Request, res: Response) => {
@@ -37,9 +37,10 @@ class VeiculoController {
 
   static addVeiculo = async (req: Request, res: Response) => {
     try {
-      const newVehicle: HydratedDocument<IVeiculo> = new veiculos(req.body);
+      const veiculoServices = new VeiculoServices();
+      const newVehicle = req.body;
+      await veiculoServices.addVehicle(newVehicle);
 
-      await verifyIfVehicleAlreadyExists(newVehicle);
       await verifyParkingSpaces(newVehicle);
       await newVehicle.save();
       await addToVeiculosArrayOnEstablishment(newVehicle);
