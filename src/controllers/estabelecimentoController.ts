@@ -58,7 +58,7 @@ class EstabelecimentoController {
   static deleteEstabelecimento = async (req: Request, res: Response) => {
     try {
       const id = req.params.id;
-      await estabelecimentos.findByIdAndDelete(id);
+      await EstabelecimentoRepository.getEstabelecimentoByIdAndDelete(id);
       return res
         .status(200)
         .send({ message: "Estabelecimento deletado com sucesso." });

@@ -19,4 +19,8 @@ export class EstabelecimentoRepository {
   static async getEstabelecimentoByIdAndUpdate(id: string, data: any) {
     return estabelecimentos.findByIdAndUpdate(id, data);
   }
+
+  static async getEstabelecimentoByIdAndDelete(id: string) {
+    await estabelecimentos.findByIdAndDelete(id);
+  }
 }
