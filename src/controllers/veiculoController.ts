@@ -40,9 +40,6 @@ class VeiculoController {
       const veiculoServices = new VeiculoServices();
       const newVehicle = req.body;
       await veiculoServices.addVehicle(newVehicle);
-
-      await verifyParkingSpaces(newVehicle);
-      await newVehicle.save();
       await addToVeiculosArrayOnEstablishment(newVehicle);
       decreaseVagasDisponiveis(newVehicle);
 
@@ -57,7 +54,7 @@ class VeiculoController {
   static updateVeiculo = async (req: Request, res: Response) => {
     try {
       const id = req.params.id;
-      await veiculos.findByIdAndUpdate(id, { $set: req.body });
+      await VeiculoRepository.getVehicleByIdAndUpdate(id, { $set: req.body });
       return res.status(200).send("Veículo atualizado com sucesso.");
     } catch (err) {
       return res

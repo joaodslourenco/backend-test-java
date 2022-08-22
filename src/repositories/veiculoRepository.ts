@@ -18,4 +18,8 @@ export class VeiculoRepository {
       placa: vehicle.placa,
     });
   }
+
+  static async getVehicleByIdAndUpdate(id: string, data: any) {
+    return veiculos.findByIdAndUpdate(id, data);
+  }
 }
