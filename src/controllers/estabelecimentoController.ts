@@ -31,10 +31,9 @@ class EstabelecimentoController {
 
   static addEstabelecimento = async (req: Request, res: Response) => {
     try {
-      const newEstabelecimento: HydratedDocument<IEstabelecimento> =
-        new estabelecimentos(req.body);
-      await newEstabelecimento.save();
-      return res.status(201).send({ establishment: newEstabelecimento });
+      const estabelecimento = req.body;
+      await EstabelecimentoRepository.addEstabelecimento(estabelecimento);
+      return res.status(201).send({ establishment: estabelecimento });
     } catch (err) {
       return res
         .status(401)
