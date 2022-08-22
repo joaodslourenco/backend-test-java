@@ -19,10 +19,8 @@ class EstabelecimentoController {
   static listEstabelecimentoById = async (req: Request, res: Response) => {
     try {
       const id = req.params.id;
-      const establishment = await estabelecimentos
-        .findById(id)
-        .populate("veiculos");
-
+      const establishment =
+        await EstabelecimentoRepository.getEstabelecimentoById(id);
       return res.status(200).send(establishment);
     } catch (err) {
       return res
