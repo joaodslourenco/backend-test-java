@@ -31,9 +31,6 @@ class VeiculoController {
       const veiculoServices = new VeiculoServices();
       const newVehicle = req.body;
       await veiculoServices.addVehicle(newVehicle);
-      await addToVeiculosArrayOnEstablishment(newVehicle);
-      decreaseVagasDisponiveis(newVehicle);
-
       return res.status(201).send({ vehicle: newVehicle });
     } catch (err) {
       return res
