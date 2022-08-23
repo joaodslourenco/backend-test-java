@@ -27,8 +27,8 @@ class VeiculoController {
   };
 
   static addVeiculo = async (req: Request, res: Response) => {
+    const veiculoServices = new VeiculoServices();
     try {
-      const veiculoServices = new VeiculoServices();
       const newVehicle = req.body;
       await veiculoServices.addVehicle(newVehicle);
       return res.status(201).send({ vehicle: newVehicle });
@@ -52,13 +52,12 @@ class VeiculoController {
   };
 
   static deleteVeiculo = async (req: Request, res: Response) => {
+    const veiculoServices = new VeiculoServices();
     try {
       const id = req.params.id;
       const vehicle = await VeiculoRepository.getVehicleById(id);
       if (vehicle) {
-        await increaseVagasDisponiveis(vehicle);
-        await deleteFromVeiculosArrayOnEstablishment(vehicle);
-        await VeiculoRepository.deleteVehicle(vehicle);
+        await veiculoServices.deleteVehicle(vehicle);
       }
       return res.status(200).send({ message: "Veículo deletado com sucesso." });
     } catch (err) {
