@@ -4,10 +4,10 @@ import { IVeiculo } from "../models/Veiculo";
 
 export class EstabelecimentoServices {
   static async addToVeiculosArrayOnEstablishment(
-    newVehicle: HydratedDocument<IVeiculo>,
+    vehicle: HydratedDocument<IVeiculo>,
   ) {
-    const establishmentId = newVehicle.estabelecimento;
-    const vehicleId = newVehicle._id;
+    const establishmentId = vehicle.estabelecimento;
+    const vehicleId = vehicle._id.toString();
     estabelecimentos.findByIdAndUpdate(
       establishmentId,
       {
@@ -28,7 +28,7 @@ export class EstabelecimentoServices {
     estabelecimentos.findByIdAndUpdate(
       establishmentId,
       {
-        $pull: { veiculos: [{ vehicleId }] },
+        $pull: { veiculos: [vehicleId] },
       },
       {},
       (err) => {
