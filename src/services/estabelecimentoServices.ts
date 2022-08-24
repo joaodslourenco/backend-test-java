@@ -1,74 +1,17 @@
-import { Document } from "mongoose";
+import { HydratedDocument } from "mongoose";
 import estabelecimentos from "../models/Estabelecimento";
 import { IVeiculo } from "../models/Veiculo";
 
-export const addToVeiculosArrayOnEstablishment = async (
-  newVehicle: IVeiculo & Document,
-) => {
-  const establishmentId = newVehicle.estabelecimento;
-  const vehicleId = newVehicle._id;
-  estabelecimentos.findByIdAndUpdate(
-    establishmentId,
-    {
-      $push: { veiculos: [...[vehicleId]] },
-    },
-    {},
-    (err) => {
-      console.log(err);
-    },
-  );
-};
-
-export const deleteFromVeiculosArrayOnEstablishment = async (
-  vehicle: IVeiculo & Document,
-) => {
-  const establishmentId = vehicle.estabelecimento;
-  const vehicleId = vehicle._id;
-  estabelecimentos.findByIdAndUpdate(
-    establishmentId,
-    {
-      $pull: { veiculos: [{ vehicleId }] },
-    },
-    {},
-    (err) => {
-      console.log(err);
-    },
-  );
-};
-
-export const verifyParkingSpaces = async (newVehicle: IVeiculo) => {
-  const establishmentId = newVehicle.estabelecimento;
-  const establishment = await estabelecimentos.findById(establishmentId);
-  const vehicleType = newVehicle.tipo;
-
-  if (
-    (vehicleType === "carro" && establishment?.vagasDisponiveisCarros === 0) ||
-    (vehicleType === "moto" && establishment?.vagasDisponiveisMotos === 0)
+export class EstabelecimentoServices {
+  static async addToVeiculosArrayOnEstablishment(
+    vehicle: HydratedDocument<IVeiculo>,
   ) {
-    throw Error("Não existem vagas disponíveis!");
-  }
-
-  return;
-};
-
-export const decreaseVagasDisponiveis = async (vehicle: IVeiculo) => {
-  const establishmentId = vehicle.estabelecimento;
-  if (vehicle.tipo === "carro") {
+    const establishmentId = vehicle.estabelecimento;
+    const vehicleId = vehicle._id.toString();
     estabelecimentos.findByIdAndUpdate(
       establishmentId,
       {
-        $inc: { vagasDisponiveisCarros: -1 },
-      },
-      {},
-      (err) => {
-        console.log(err);
-      },
-    );
-  } else {
-    estabelecimentos.findByIdAndUpdate(
-      establishmentId,
-      {
-        $inc: { vagasDisponiveisMotos: -1 },
+        $push: { veiculos: [...[vehicleId]] },
       },
       {},
       (err) => {
@@ -76,26 +19,16 @@ export const decreaseVagasDisponiveis = async (vehicle: IVeiculo) => {
       },
     );
   }
-};
 
-export const increaseVagasDisponiveis = async (vehicle: IVeiculo) => {
-  const establishmentId = vehicle.estabelecimento;
-  if (vehicle.tipo === "carro") {
+  static async deleteFromVeiculosArrayOnEstablishment(
+    vehicle: HydratedDocument<IVeiculo>,
+  ) {
+    const establishmentId = vehicle.estabelecimento;
+    const vehicleId = vehicle._id;
     estabelecimentos.findByIdAndUpdate(
       establishmentId,
       {
-        $inc: { vagasDisponiveisCarros: +1 },
-      },
-      {},
-      (err) => {
-        console.log(err);
-      },
-    );
-  } else {
-    estabelecimentos.findByIdAndUpdate(
-      establishmentId,
-      {
-        $inc: { vagasDisponiveisMotos: +1 },
+        $pull: { veiculos: [vehicleId] },
       },
       {},
       (err) => {
@@ -103,4 +36,74 @@ export const increaseVagasDisponiveis = async (vehicle: IVeiculo) => {
       },
     );
   }
-};
+
+  static async verifyParkingSpaces(newVehicle: IVeiculo) {
+    const establishmentId = newVehicle.estabelecimento;
+    const establishment = await estabelecimentos.findById(establishmentId);
+    const vehicleType = newVehicle.tipo;
+
+    if (
+      (vehicleType === "carro" &&
+        establishment?.vagasDisponiveisCarros === 0) ||
+      (vehicleType === "moto" && establishment?.vagasDisponiveisMotos === 0)
+    ) {
+      throw Error("Não existem vagas disponíveis!");
+    }
+
+    return;
+  }
+
+  static async decreaseVagasDisponiveis(vehicle: IVeiculo) {
+    const establishmentId = vehicle.estabelecimento;
+    if (vehicle.tipo === "carro") {
+      estabelecimentos.findByIdAndUpdate(
+        establishmentId,
+        {
+          $inc: { vagasDisponiveisCarros: -1 },
+        },
+        {},
+        (err) => {
+          console.log(err);
+        },
+      );
+    } else {
+      estabelecimentos.findByIdAndUpdate(
+        establishmentId,
+        {
+          $inc: { vagasDisponiveisMotos: -1 },
+        },
+        {},
+        (err) => {
+          console.log(err);
+        },
+      );
+    }
+  }
+
+  static async increaseVagasDisponiveis(vehicle: IVeiculo) {
+    const establishmentId = vehicle.estabelecimento;
+    if (vehicle.tipo === "carro") {
+      estabelecimentos.findByIdAndUpdate(
+        establishmentId,
+        {
+          $inc: { vagasDisponiveisCarros: +1 },
+        },
+        {},
+        (err) => {
+          console.log(err);
+        },
+      );
+    } else {
+      estabelecimentos.findByIdAndUpdate(
+        establishmentId,
+        {
+          $inc: { vagasDisponiveisMotos: +1 },
+        },
+        {},
+        (err) => {
+          console.log(err);
+        },
+      );
+    }
+  }
+}

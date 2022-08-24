@@ -1,6 +1,4 @@
 import { Request, Response } from "express";
-import { HydratedDocument } from "mongoose";
-import estabelecimentos, { IEstabelecimento } from "../models/Estabelecimento";
 import { EstabelecimentoRepository } from "../repositories/estabelecimentoRepository";
 
 class EstabelecimentoController {
