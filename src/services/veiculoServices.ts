@@ -14,7 +14,7 @@ export class VeiculoServices {
 
   public async addVehicle(vehicle: HydratedDocument<IVeiculo>) {
     try {
-      this.verifyIfVehicleAlreadyExists(vehicle);
+      await this.verifyIfVehicleAlreadyExists(vehicle);
       await EstabelecimentoServices.verifyParkingSpaces(vehicle);
       const newVehicle = new veiculos(vehicle);
       await newVehicle.save();
