@@ -8,87 +8,83 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
-const Veiculo_1 = __importDefault(require("../models/Veiculo"));
-const estabelecimentoServices_1 = require("../services/estabelecimentoServices");
+const veiculoRepository_1 = require("../repositories/veiculoRepository");
 const veiculoServices_1 = require("../services/veiculoServices");
 class VeiculoController {
+    listVeiculos(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const vehicles = yield veiculoRepository_1.VeiculoRepository.getAllVehicles();
+                return res.status(200).json(vehicles);
+            }
+            catch (err) {
+                return res
+                    .status(400)
+                    .send({ message: `${err} - Erro ao carregar veículos.` });
+            }
+        });
+    }
+    listVeiculoById(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const id = req.params.id;
+                const vehicle = yield veiculoRepository_1.VeiculoRepository.getVehicleById(id);
+                return res.status(200).json(vehicle);
+            }
+            catch (err) {
+                return res
+                    .status(400)
+                    .send({ message: `${err} - erro ao pesquisar veículo.` });
+            }
+        });
+    }
+    addVeiculo(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const veiculoServices = new veiculoServices_1.VeiculoServices();
+            try {
+                const newVehicle = req.body;
+                yield veiculoServices.addVehicle(newVehicle);
+                return res.status(201).send({ vehicle: newVehicle });
+            }
+            catch (err) {
+                return res
+                    .status(401)
+                    .send({ message: `${err} - falha ao registrar veículo.` });
+            }
+        });
+    }
+    updateVeiculo(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const id = req.params.id;
+                yield veiculoRepository_1.VeiculoRepository.getVehicleByIdAndUpdate(id, { $set: req.body });
+                return res.status(200).send("Veículo atualizado com sucesso.");
+            }
+            catch (err) {
+                return res
+                    .status(401)
+                    .send({ message: `${err} - falha ao atualizar veículo.` });
+            }
+        });
+    }
+    deleteVeiculo(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const veiculoServices = new veiculoServices_1.VeiculoServices();
+            try {
+                const id = req.params.id;
+                const vehicle = yield veiculoRepository_1.VeiculoRepository.getVehicleById(id);
+                if (vehicle) {
+                    yield veiculoServices.deleteVehicle(vehicle);
+                }
+                return res.status(200).send({ message: "Veículo deletado com sucesso." });
+            }
+            catch (err) {
+                return res
+                    .status(500)
+                    .send({ message: `${err} - falha ao deletar veículo.` });
+            }
+        });
+    }
 }
-_a = VeiculoController;
-VeiculoController.listVeiculos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const vehicles = yield Veiculo_1.default
-            .find()
-            .populate("estabelecimento", ["nome", "endereco"]);
-        return res.status(200).json(vehicles);
-    }
-    catch (err) {
-        return res
-            .status(400)
-            .send({ message: `${err} - Erro ao carregar veículos.` });
-    }
-});
-VeiculoController.listVeiculoById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const id = req.params.id;
-        const vehicle = yield Veiculo_1.default
-            .findById(id)
-            .populate("estabelecimento", ["nome", "endereco"]);
-        return res.status(200).send(vehicle);
-    }
-    catch (err) {
-        return res
-            .status(400)
-            .send({ message: `${err} - erro ao pesquisar veículo.` });
-    }
-});
-VeiculoController.addVeiculo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const newVehicle = new Veiculo_1.default(req.body);
-        yield (0, veiculoServices_1.verifyIfVehicleAlreadyExists)(newVehicle);
-        yield (0, estabelecimentoServices_1.verifyParkingSpaces)(newVehicle);
-        yield newVehicle.save();
-        yield (0, estabelecimentoServices_1.addToVeiculosArrayOnEstablishment)(newVehicle);
-        (0, estabelecimentoServices_1.decreaseVagasDisponiveis)(newVehicle);
-        return res.status(201).send({ vehicle: newVehicle });
-    }
-    catch (err) {
-        return res
-            .status(401)
-            .send({ message: `${err} - falha ao registrar veículo.` });
-    }
-});
-VeiculoController.updateVeiculo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const id = req.params.id;
-        yield Veiculo_1.default.findByIdAndUpdate(id, { $set: req.body });
-        return res.status(200).send("Veículo atualizado com sucesso.");
-    }
-    catch (err) {
-        return res
-            .status(401)
-            .send({ message: `${err} - falha ao atualizar veículo.` });
-    }
-});
-VeiculoController.deleteVeiculo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const id = req.params.id;
-        const vehicle = yield Veiculo_1.default.findById(id);
-        if (vehicle) {
-            yield (0, estabelecimentoServices_1.increaseVagasDisponiveis)(vehicle);
-            yield (0, estabelecimentoServices_1.deleteFromVeiculosArrayOnEstablishment)(vehicle);
-            vehicle.delete();
-        }
-        return res.status(200).send({ message: "Veículo deletado com sucesso." });
-    }
-    catch (err) {
-        return res
-            .status(500)
-            .send({ message: `${err} - falha ao deletar veículo.` });
-    }
-});
-exports.default = VeiculoController;
+exports.default = new VeiculoController();

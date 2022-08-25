@@ -12,72 +12,68 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.increaseVagasDisponiveis = exports.decreaseVagasDisponiveis = exports.verifyParkingSpaces = exports.deleteFromVeiculosArrayOnEstablishment = exports.addToVeiculosArrayOnEstablishment = void 0;
+exports.EstabelecimentoServices = void 0;
 const Estabelecimento_1 = __importDefault(require("../models/Estabelecimento"));
-const addToVeiculosArrayOnEstablishment = (newVehicle) => __awaiter(void 0, void 0, void 0, function* () {
-    const establishmentId = newVehicle.estabelecimento;
-    const vehicleId = newVehicle._id;
-    Estabelecimento_1.default.findByIdAndUpdate(establishmentId, {
-        $push: { veiculos: [...[vehicleId]] },
-    }, {}, (err) => {
-        console.log(err);
-    });
-});
-exports.addToVeiculosArrayOnEstablishment = addToVeiculosArrayOnEstablishment;
-const deleteFromVeiculosArrayOnEstablishment = (vehicle) => __awaiter(void 0, void 0, void 0, function* () {
-    const establishmentId = vehicle.estabelecimento;
-    const vehicleId = vehicle._id;
-    Estabelecimento_1.default.findByIdAndUpdate(establishmentId, {
-        $pull: { veiculos: [{ vehicleId }] },
-    }, {}, (err) => {
-        console.log(err);
-    });
-});
-exports.deleteFromVeiculosArrayOnEstablishment = deleteFromVeiculosArrayOnEstablishment;
-const verifyParkingSpaces = (newVehicle) => __awaiter(void 0, void 0, void 0, function* () {
-    const establishmentId = newVehicle.estabelecimento;
-    const establishment = yield Estabelecimento_1.default.findById(establishmentId);
-    const vehicleType = newVehicle.tipo;
-    if ((vehicleType === "carro" && (establishment === null || establishment === void 0 ? void 0 : establishment.vagasDisponiveisCarros) === 0) ||
-        (vehicleType === "moto" && (establishment === null || establishment === void 0 ? void 0 : establishment.vagasDisponiveisMotos) === 0)) {
-        throw Error("Não existem vagas disponíveis!");
-    }
-    return;
-});
-exports.verifyParkingSpaces = verifyParkingSpaces;
-const decreaseVagasDisponiveis = (vehicle) => __awaiter(void 0, void 0, void 0, function* () {
-    const establishmentId = vehicle.estabelecimento;
-    if (vehicle.tipo === "carro") {
-        Estabelecimento_1.default.findByIdAndUpdate(establishmentId, {
-            $inc: { vagasDisponiveisCarros: -1 },
-        }, {}, (err) => {
-            console.log(err);
+class EstabelecimentoServices {
+    static addToVeiculosArrayOnEstablishment(vehicle) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const establishmentId = vehicle.estabelecimento;
+            const vehicleId = vehicle._id.toString();
+            yield Estabelecimento_1.default.findByIdAndUpdate(establishmentId, {
+                $push: { veiculos: [...[vehicleId]] },
+            });
         });
     }
-    else {
-        Estabelecimento_1.default.findByIdAndUpdate(establishmentId, {
-            $inc: { vagasDisponiveisMotos: -1 },
-        }, {}, (err) => {
-            console.log(err);
+    static deleteFromVeiculosArrayOnEstablishment(vehicle) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const establishmentId = vehicle.estabelecimento;
+            const vehicleId = vehicle._id;
+            yield Estabelecimento_1.default.findByIdAndUpdate(establishmentId, {
+                $pull: { veiculos: [vehicleId] },
+            });
         });
     }
-});
-exports.decreaseVagasDisponiveis = decreaseVagasDisponiveis;
-const increaseVagasDisponiveis = (vehicle) => __awaiter(void 0, void 0, void 0, function* () {
-    const establishmentId = vehicle.estabelecimento;
-    if (vehicle.tipo === "carro") {
-        Estabelecimento_1.default.findByIdAndUpdate(establishmentId, {
-            $inc: { vagasDisponiveisCarros: +1 },
-        }, {}, (err) => {
-            console.log(err);
+    static verifyParkingSpaces(newVehicle) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const establishmentId = newVehicle.estabelecimento;
+            const establishment = yield Estabelecimento_1.default.findById(establishmentId);
+            const vehicleType = newVehicle.tipo;
+            if ((vehicleType === "carro" &&
+                (establishment === null || establishment === void 0 ? void 0 : establishment.vagasDisponiveisCarros) === 0) ||
+                (vehicleType === "moto" && (establishment === null || establishment === void 0 ? void 0 : establishment.vagasDisponiveisMotos) === 0)) {
+                throw Error("Não existem vagas disponíveis!");
+            }
         });
     }
-    else {
-        Estabelecimento_1.default.findByIdAndUpdate(establishmentId, {
-            $inc: { vagasDisponiveisMotos: +1 },
-        }, {}, (err) => {
-            console.log(err);
+    static decreaseVagasDisponiveis(vehicle) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const establishmentId = vehicle.estabelecimento;
+            if (vehicle.tipo === "carro") {
+                yield Estabelecimento_1.default.findByIdAndUpdate(establishmentId, {
+                    $inc: { vagasDisponiveisCarros: -1 },
+                });
+            }
+            else {
+                yield Estabelecimento_1.default.findByIdAndUpdate(establishmentId, {
+                    $inc: { vagasDisponiveisMotos: -1 },
+                });
+            }
         });
     }
-});
-exports.increaseVagasDisponiveis = increaseVagasDisponiveis;
+    static increaseVagasDisponiveis(vehicle) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const establishmentId = vehicle.estabelecimento;
+            if (vehicle.tipo === "carro") {
+                yield Estabelecimento_1.default.findByIdAndUpdate(establishmentId, {
+                    $inc: { vagasDisponiveisCarros: +1 },
+                });
+            }
+            else {
+                yield Estabelecimento_1.default.findByIdAndUpdate(establishmentId, {
+                    $inc: { vagasDisponiveisMotos: +1 },
+                });
+            }
+        });
+    }
+}
+exports.EstabelecimentoServices = EstabelecimentoServices;
