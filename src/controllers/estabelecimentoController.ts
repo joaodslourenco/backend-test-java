@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { EstabelecimentoRepository } from "../repositories/estabelecimentoRepository";
 
 class EstabelecimentoController {
-  static listEstabelecimentos = async (req: Request, res: Response) => {
+  public async listEstabelecimentos(req: Request, res: Response) {
     try {
       const establishmentList =
         await EstabelecimentoRepository.getEstabelecimentosList();
@@ -12,9 +12,9 @@ class EstabelecimentoController {
         .status(400)
         .send({ message: `${err} - Erro ao carregar estabelecimentos.` });
     }
-  };
+  }
 
-  static listEstabelecimentoById = async (req: Request, res: Response) => {
+  public async listEstabelecimentoById(req: Request, res: Response) {
     try {
       const id = req.params.id;
       const establishment =
@@ -25,9 +25,9 @@ class EstabelecimentoController {
         .status(400)
         .send({ message: `${err} - erro ao pesquisar estabelecimento.` });
     }
-  };
+  }
 
-  static addEstabelecimento = async (req: Request, res: Response) => {
+  public async addEstabelecimento(req: Request, res: Response) {
     try {
       const estabelecimento = req.body;
       await EstabelecimentoRepository.addEstabelecimento(estabelecimento);
@@ -37,9 +37,9 @@ class EstabelecimentoController {
         .status(401)
         .send({ message: `${err} - falha ao registrar estabelecimento.` });
     }
-  };
+  }
 
-  static updateEstabelecimento = async (req: Request, res: Response) => {
+  public async updateEstabelecimento(req: Request, res: Response) {
     try {
       const id = req.params.id;
       await EstabelecimentoRepository.getEstabelecimentoByIdAndUpdate(id, {
@@ -51,9 +51,9 @@ class EstabelecimentoController {
         .status(401)
         .send({ message: `${err} - falha ao atualizar estabelecimento.` });
     }
-  };
+  }
 
-  static deleteEstabelecimento = async (req: Request, res: Response) => {
+  public async deleteEstabelecimento(req: Request, res: Response) {
     try {
       const id = req.params.id;
       await EstabelecimentoRepository.getEstabelecimentoByIdAndDelete(id);
@@ -65,7 +65,7 @@ class EstabelecimentoController {
         .status(500)
         .send({ message: `${err} - falha ao deletar estabelecimento.` });
     }
-  };
+  }
 }
 
-export default EstabelecimentoController;
+export default new EstabelecimentoController();
