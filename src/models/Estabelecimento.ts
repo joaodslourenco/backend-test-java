@@ -14,7 +14,7 @@ export interface IEstabelecimento {
   veiculos: IVeiculo[];
 }
 
-const estabelecimentoSchema = new mongoose.Schema<IEstabelecimento>({
+const estabelecimentoSchema = new mongoose.Schema({
   id: { type: String },
   nome: { type: String, required: true },
   cnpj: { type: String, required: true },
@@ -27,7 +27,7 @@ const estabelecimentoSchema = new mongoose.Schema<IEstabelecimento>({
   veiculos: [{ type: mongoose.Schema.Types.ObjectId, ref: "Veiculos" }],
 });
 
-const estabelecimentos = mongoose.model(
+const estabelecimentos = mongoose.model<IEstabelecimento>(
   "estabelecimentos",
   estabelecimentoSchema,
 );

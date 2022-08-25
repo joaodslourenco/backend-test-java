@@ -11,7 +11,7 @@ export interface IVeiculo {
   estabelecimento: IEstabelecimento;
 }
 
-const veiculoSchema = new mongoose.Schema<IVeiculo>({
+const veiculoSchema = new mongoose.Schema({
   id: { type: String },
   marca: { type: String, required: true },
   modelo: { type: String, required: true },
@@ -25,6 +25,6 @@ const veiculoSchema = new mongoose.Schema<IVeiculo>({
   },
 });
 
-const veiculos = mongoose.model("Veiculos", veiculoSchema);
+const veiculos = mongoose.model<IVeiculo>("Veiculos", veiculoSchema);
 
 export default veiculos;
